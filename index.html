@@ -20,11 +20,12 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow: hidden; /* Bloquea el scroll global */
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(-45deg, #ffafcc, #b392ac, #a2d2ff, #d6ccc2);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
+            user-select: none; /* Evita selección de texto accidental */
         }
 
         @keyframes gradientBG {
@@ -49,64 +50,20 @@
 
         .name-intro {
             font-family: 'Great Vibes', cursive;
-            font-size: 8rem;
+            font-size: clamp(4rem, 15vw, 8rem);
             line-height: 1;
             color: #FFFFFF;
-            text-shadow: 
-                0 0 10px #FFFFFF,
-                0 0 20px #FFFFFF,
-                0 0 30px rgba(255, 255, 255, 0.5);
-            filter: drop-shadow(0 10px 15px rgba(255,255,255,0.3));
-            margin-bottom: 40px;
+            text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
             animation: pulseGlow 2s ease-in-out infinite alternate;
         }
 
         @keyframes pulseGlow {
             from { text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF; }
-            to { text-shadow: 0 0 20px #FFFFFF, 0 0 40px #FFFFFF, 0 0 60px rgba(255,255,255,0.8); }
+            to { text-shadow: 0 0 20px #FFFFFF, 0 0 40px #FFFFFF, 0 0 60px rgba(255, 255, 255, 0.8); }
         }
 
-        .btn-enter {
-            position: relative;
-            padding: 15px 50px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #fff;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 50px;
-            cursor: pointer;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .btn-enter::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 20%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.6);
-            transform: rotate(30deg);
-            animation: sparkle 3s infinite;
-        }
-
-        @keyframes sparkle {
-            0% { left: -60%; }
-            30% { left: 120%; }
-            100% { left: 120%; }
-        }
-
-        .btn-enter:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.4);
-        }
-
-        /* --- Contenido Principal --- */
+        /* --- Contenido Principal Adaptable --- */
         #main-content {
             opacity: 0;
             visibility: hidden;
@@ -116,227 +73,129 @@
             width: 100%;
             height: 100%;
             transition: opacity 1.5s ease;
-            padding: 20px;
+            padding: 10px;
         }
 
         .glass-card {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50px;
+            border-radius: clamp(30px, 5vh, 50px);
             width: 100%;
-            max-width: 500px;
-            padding: 40px 25px;
+            max-width: 480px;
+            padding: clamp(20px, 4vh, 40px) 20px;
             text-align: center;
             box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        /* Ocultar scrollbar */
-        .glass-card::-webkit-scrollbar {
-            width: 0;
-            display: none;
+            /* Asegura que quepa en pantalla sin scroll vertical */
+            max-height: 95vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .name-luxury {
             font-family: 'Great Vibes', cursive;
-            font-size: 5rem;
+            font-size: clamp(3rem, 10vh, 5rem);
             color: #FFFFFF;
-            text-shadow: 0 0 10px #FFFFFF, 0 0 20px rgba(255, 255, 255, 0.4);
+            text-shadow: 0 0 10px #FFFFFF;
             line-height: 1;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
+        /* --- Efecto en Foto Principal --- */
         .profile-pic {
-            width: 160px;
-            height: 160px;
+            width: clamp(100px, 20vh, 160px);
+            height: clamp(100px, 20vh, 160px);
             border-radius: 50%;
-            border: 6px solid #fff;
+            border: 5px solid #fff;
             object-fit: cover;
-            margin: 0 auto 25px;
+            margin: 0 auto 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        .profile-pic:hover {
+            transform: scale(1.08);
         }
 
-        /* --- Lógica de Mariposas 3D --- */
-        .butterfly-world {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .butterfly-wrap {
-            position: absolute;
-            transform: scale(0.35);
-            perspective: 800px;
-        }
-
-        .butterfly {
-            animation: hover 250ms cubic-bezier(.48,.01,.54,1) infinite alternate-reverse;
-            position: relative;
-            transform-style: preserve-3d;
-            transform: rotateX(50deg) rotateY(20deg) rotateZ(-50deg);
-            width: 30px;
-        }
-
-        .butterfly::before {
-            background: #222;
-            border-radius: 50%;
-            content: '';
-            display: block;
-            height: 110px;
-            left: 50%;
-            margin-left: -10px;
-            position: absolute;
-            top: -15px;
-            transform: rotatey(100deg);
-            width: 20px;
-            z-index: 2;
-        }
-
-        .wing {
-            display: block;
-            opacity: 0.8;
-            position: absolute;
-            top: 0;
-            transform-style: preserve-3d;
-        }
-
-        .wing:first-child {
-            animation: leftflap 250ms cubic-bezier(.48,.01,.54,1) infinite alternate-reverse;
-            height: 1px;
-            left: 0;
-            transform: rotateY(-20deg);
-            transform-origin: 700% 50%;
-            width: 1px;
-            z-index: 3;
-        }
-
-        .wing:last-child {
-            animation: rightflap 250ms cubic-bezier(.48,.01,.54,1) infinite alternate-reverse;
-            right: 0;
-            transform: rotateY(200deg);
-            transform-origin: 0% 50%;
-            z-index: 1;
-        }
-
-        .bit, .bit::after {
-            border-radius: 50%;
-            overflow: hidden;
-            position: absolute;
-            right: 0;
-            top: 0;
-            transform-origin: 100% 50%;
-        }
-
-        .bit:first-child { height: 70px; top: 15px; transform: rotateZ(40deg); width: 130px; }
-        .bit:first-child::after { content: ''; display: inline-block; height: 60px; left: -30px; top: 5px; width: 100px; }
-        .bit:last-child { height: 55px; transform: rotateZ(-40deg); width: 100px; }
-        .bit:last-child::after { content: ''; display: inline-block; height: 45px; left: -24px; top: 5px; width: 60px; z-index: 1; }
-
-        /* Colores Mariposas */
-        .b-pink .bit { background: #ff85a1; } .b-pink .bit::after { background: #ffafcc; }
-        .b-blue .bit { background: #4099FF; } .b-blue .bit::after { background: #a2d2ff; }
-        .b-purple .bit { background: #8e44ad; } .b-purple .bit::after { background: #b392ac; }
-
-        @keyframes hover { 
-            0% { transform: rotateX(50deg) rotateY(20deg) rotateZ(-50deg) translateZ(0px); }
-            100% { transform: rotateX(50deg) rotateY(20deg) rotateZ(-50deg) translateZ(-8px); }
-        }
-        @keyframes leftflap { 0% { transform: rotateY(-20deg); } 100% { transform: rotateY(90deg); } }
-        @keyframes rightflap { 0% { transform: rotateY(200deg); } 100% { transform: rotateY(90deg); } }
-
-        /* --- Info Card Layout --- */
-        .info-card {
-            background: rgba(255, 255, 255, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            transition: transform 0.3s ease;
-        }
-        .info-card:hover { transform: translateY(-5px); }
-
-        /* --- Amigos Grid --- */
-        .friend-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: transform 0.3s ease;
-        }
-        .friend-item:hover { transform: scale(1.05); }
-
+        /* --- Amigos Grid Optimizado --- */
         .friend-circle {
-            width: 70px;
-            height: 70px;
+            width: clamp(50px, 8vh, 70px);
+            height: clamp(50px, 8vh, 70px);
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.4);
             border: 2px solid white;
             overflow: hidden;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .friend-item:hover .friend-circle {
+            transform: scale(1.1);
         }
 
         .friend-link {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #fff;
-            text-decoration: none;
             background: rgba(0, 0, 0, 0.2);
-            padding: 2px 10px;
+            padding: 2px 8px;
             border-radius: 20px;
-            transition: background 0.3s;
-        }
-        .friend-link:hover {
-            background: rgba(0, 0, 0, 0.4);
         }
 
-        /* --- Estilos del Reproductor Flotante --- */
+        /* --- Mariposas 3D --- */
+        .butterfly-world { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+        .butterfly-wrap { position: absolute; transform: scale(0.3); perspective: 800px; }
+        .butterfly { animation: hover 250ms infinite alternate-reverse; position: relative; transform-style: preserve-3d; transform: rotateX(50deg) rotateY(20deg) rotateZ(-50deg); width: 30px; }
+        .wing { display: block; opacity: 0.8; position: absolute; top: 0; transform-style: preserve-3d; }
+        .wing:first-child { animation: leftflap 250ms infinite alternate-reverse; height: 1px; left: 0; transform-origin: 700% 50%; width: 1px; }
+        .wing:last-child { animation: rightflap 250ms infinite alternate-reverse; right: 0; transform-origin: 0% 50%; }
+        .bit, .bit::after { border-radius: 50%; position: absolute; right: 0; top: 0; transform-origin: 100% 50%; }
+        .bit:first-child { height: 70px; top: 15px; transform: rotateZ(40deg); width: 130px; }
+        .bit:first-child::after { content: ''; height: 60px; left: -30px; top: 5px; width: 100px; }
+        .bit:last-child { height: 55px; transform: rotateZ(-40deg); width: 100px; }
+        .bit:last-child::after { content: ''; height: 45px; left: -24px; top: 5px; width: 60px; }
+        .b-pink .bit { background: #ff85a1; } .b-pink .bit::after { background: #ffafcc; }
+        .b-blue .bit { background: #4099FF; } .b-blue .bit::after { background: #a2d2ff; }
+        .b-purple .bit { background: #8e44ad; } .b-purple .bit::after { background: #b392ac; }
+        @keyframes hover { from { transform: rotateX(50deg) rotateY(20deg) rotateZ(-50deg) translateZ(0px); } to { transform: rotateX(50deg) rotateY(20deg) rotateZ(-50deg) translateZ(-8px); } }
+        @keyframes leftflap { 0% { transform: rotateY(-20deg); } 100% { transform: rotateY(90deg); } }
+        @keyframes rightflap { 0% { transform: rotateY(200deg); } 100% { transform: rotateY(90deg); } }
+
+        /* --- Reproductor Flotante --- */
         #music-toggle {
             position: fixed;
             bottom: 20px;
             left: 20px;
             z-index: 2000;
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 50%;
-            display: none; /* Se activa con el click de entrar */
+            display: none;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, background 0.3s ease;
         }
 
-        #music-toggle:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .music-icon {
-            fill: white;
-            width: 20px;
-            height: 20px;
+        /* --- Media Queries para Pantallas Muy Pequeñas --- */
+        @media (max-height: 600px) {
+            .mb-8 { margin-bottom: 0.5rem !important; }
+            .pt-8 { padding-top: 0.5rem !important; }
+            .grid-cols-3 { gap: 10px !important; }
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;" ondragstart="return false;">
 
     <!-- Elemento de Audio -->
     <audio id="bg-music" src="musica.mp3" loop preload="auto"></audio>
 
     <!-- Botón de Control de Música -->
     <div id="music-toggle" onclick="toggleMusic()">
-        <svg id="icon-play" class="music-icon" style="display: none;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        <svg id="icon-pause" class="music-icon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        <svg id="icon-play" style="display: none;" width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="icon-pause" width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
     </div>
 
     <!-- Pantalla de Intro -->
@@ -347,21 +206,10 @@
 
     <!-- Mariposas Decorativas -->
     <div class="butterfly-world">
-        <div class="butterfly-wrap b-pink" style="top: 10%; left: 5%;">
-            <div class="butterfly"><div class="wing"><div class="bit"></div><div class="bit"></div></div><div class="wing"><div class="bit"></div><div class="bit"></div></div></div>
-        </div>
-        <div class="butterfly-wrap b-blue" style="top: 15%; right: 8%;">
-            <div class="butterfly"><div class="wing"><div class="bit"></div><div class="bit"></div></div><div class="wing"><div class="bit"></div><div class="bit"></div></div></div>
-        </div>
-        <div class="butterfly-wrap b-purple" style="top: 55%; left: 2%;">
-            <div class="butterfly"><div class="wing"><div class="bit"></div><div class="bit"></div></div><div class="wing"><div class="bit"></div><div class="bit"></div></div></div>
-        </div>
-        <div class="butterfly-wrap b-pink" style="top: 45%; right: 4%;">
-            <div class="butterfly"><div class="wing"><div class="bit"></div><div class="bit"></div></div><div class="wing"><div class="bit"></div><div class="bit"></div></div></div>
-        </div>
-        <div class="butterfly-wrap b-blue" style="bottom: 10%; left: 15%;">
-            <div class="butterfly"><div class="wing"><div class="bit"></div><div class="bit"></div></div><div class="wing"><div class="bit"></div><div class="bit"></div></div></div>
-        </div>
+        <div class="butterfly-wrap b-pink" style="top: 5%; left: 5%;"><div class="butterfly"><div class="wing"><div class="bit"></div><div class="bit"></div></div><div class="wing"><div class="bit"></div><div class="bit"></div></div></div></div>
+        <div class="butterfly-wrap b-blue" style="top: 10%; right: 10%;"><div class="butterfly"><div class="wing"><div class="bit"></div><div class="bit"></div></div><div class="wing"><div class="bit"></div><div class="bit"></div></div></div></div>
+        <div class="butterfly-wrap b-purple" style="bottom: 10%; left: 5%;"><div class="butterfly"><div class="wing"><div class="bit"></div><div class="bit"></div></div><div class="wing"><div class="bit"></div><div class="bit"></div></div></div></div>
+        <div class="butterfly-wrap b-pink" style="bottom: 15%; right: 5%;"><div class="butterfly"><div class="wing"><div class="bit"></div><div class="bit"></div></div><div class="wing"><div class="bit"></div><div class="bit"></div></div></div></div>
     </div>
 
     <!-- Contenido Principal -->
@@ -369,83 +217,84 @@
         <div class="glass-card">
             <h1 class="name-luxury">Gaby</h1>
 
-            <img src="https://xatimg.com/image/kE0XqQ4WiVSH.png" alt="Gaby Profile" class="profile-pic">
+            <!-- Foto Principal con efecto hover -->
+            <img src="https://xatimg.com/image/kE0XqQ4WiVSH.png" alt="Gaby Profile" class="profile-pic" draggable="false">
 
-            <div class="mb-8">
-                <h2 class="text-white text-xs uppercase tracking-[0.3em] font-semibold mb-6 opacity-80">Sobre mí</h2>
+            <div class="mb-6">
+                <h2 class="text-white text-[10px] uppercase tracking-[0.2em] font-semibold mb-3 opacity-80">Sobre mí</h2>
                 
-                <div class="grid grid-cols-2 gap-4 px-4">
-                    <div class="info-card">
-                        <span class="text-[10px] uppercase text-white opacity-60">Nacionalidad</span>
-                        <img src="https://cdn-icons-png.flaticon.com/512/5344/5344530.png" alt="Icono" class="w-8 h-8 object-contain">
+                <div class="grid grid-cols-2 gap-3 px-2">
+                    <div class="bg-white/20 border border-white/40 rounded-xl p-2 flex flex-col items-center justify-center">
+                        <span class="text-[9px] uppercase text-white opacity-60">País</span>
+                        <img src="https://cdn-icons-png.flaticon.com/512/5344/5344530.png" alt="Icono" class="w-6 h-6 object-contain">
                     </div>
 
-                    <div class="info-card">
-                        <span class="text-[10px] uppercase text-white opacity-60">Signo</span>
-                        <div class="flex items-center gap-2">
-                            <span class="text-2xl">♉</span>
-                            <span class="text-sm font-semibold text-gray-700">Tauro</span>
+                    <div class="bg-white/20 border border-white/40 rounded-xl p-2 flex flex-col items-center justify-center">
+                        <span class="text-[9px] uppercase text-white opacity-60">Signo</span>
+                        <div class="flex items-center gap-1">
+                            <span class="text-lg">♉</span>
+                            <span class="text-xs font-semibold text-white/90">Tauro</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Sección Amigos -->
-            <div class="pt-8 border-t border-white/20">
-                <h3 class="text-white text-[10px] uppercase tracking-[0.4em] mb-6">Amigos</h3>
+            <!-- Sección Amigos Reorganizada -->
+            <div class="pt-4 border-t border-white/20">
+                <h3 class="text-white text-[9px] uppercase tracking-[0.3em] mb-4">Amigos</h3>
                 
-                <div class="grid grid-cols-3 gap-y-8 gap-x-2">
+                <div class="grid grid-cols-3 gap-y-4 gap-x-1">
                     <!-- Heis -->
-                    <div class="friend-item">
+                    <div class="friend-item flex flex-col items-center">
                         <div class="friend-circle">
-                            <img src="https://xatimg.com/image/2w69Pmroq8vJ.gif" alt="Heis" class="w-full h-full object-cover">
+                            <img src="https://xatimg.com/image/2w69Pmroq8vJ.gif" class="w-full h-full object-cover" draggable="false">
                         </div>
-                        <span class="text-white text-[10px] font-semibold mb-1">Heis</span>
+                        <span class="text-white text-[9px] font-semibold mb-1">Heis</span>
                         <a href="https://xat.me/heis" target="_blank" class="friend-link">Perfil</a>
                     </div>
 
-                    <!-- Yaaz -->
-                    <div class="friend-item">
-                        <div class="friend-circle">
-                            <img src="https://i.imgur.com/ThW77Zc.png" alt="Yaaz" class="w-full h-full object-cover">
-                        </div>
-                        <span class="text-white text-[10px] font-semibold mb-1">Yaaz</span>
-                        <a href="https://xat.me/yaaz" target="_blank" class="friend-link">Perfil</a>
-                    </div>
-
-                    <!-- Estela -->
-                    <div class="friend-item">
-                        <div class="friend-circle">
-                            <img src="https://xatimg.com/image/FwHBT0GtlIXu.png" alt="Estela" class="w-full h-full object-cover">
-                        </div>
-                        <span class="text-white text-[10px] font-semibold mb-1">Estela</span>
-                        <a href="https://xat.me/estela" target="_blank" class="friend-link">Perfil</a>
-                    </div>
-
                     <!-- Paulina -->
-                    <div class="friend-item">
+                    <div class="friend-item flex flex-col items-center">
                         <div class="friend-circle">
-                            <img src="https://xatimg.com/image/SfAtzGQLIvoR.jpg" alt="Paulina" class="w-full h-full object-cover">
+                            <img src="https://xatimg.com/image/SfAtzGQLIvoR.jpg" class="w-full h-full object-cover" draggable="false">
                         </div>
-                        <span class="text-white text-[10px] font-semibold mb-1">Paulina</span>
+                        <span class="text-white text-[9px] font-semibold mb-1">Paulina</span>
                         <a href="https://xat.me/iPauLinaaa" target="_blank" class="friend-link">Perfil</a>
                     </div>
 
-                    <!-- Fabi -->
-                    <div class="friend-item">
+                    <!-- Estela -->
+                    <div class="friend-item flex flex-col items-center">
                         <div class="friend-circle">
-                            <img src="https://xatimg.com/image/nW55YBWRcnQW.jpg" alt="Fabi" class="w-full h-full object-cover">
+                            <img src="https://xatimg.com/image/FwHBT0GtlIXu.png" class="w-full h-full object-cover" draggable="false">
                         </div>
-                        <span class="text-white text-[10px] font-semibold mb-1">Fabi</span>
+                        <span class="text-white text-[9px] font-semibold mb-1">Estela</span>
+                        <a href="https://xat.me/estela" target="_blank" class="friend-link">Perfil</a>
+                    </div>
+
+                    <!-- Yaaz -->
+                    <div class="friend-item flex flex-col items-center">
+                        <div class="friend-circle">
+                            <img src="https://i.imgur.com/ThW77Zc.png" class="w-full h-full object-cover" draggable="false">
+                        </div>
+                        <span class="text-white text-[9px] font-semibold mb-1">Yaaz</span>
+                        <a href="https://xat.me/yaaz" target="_blank" class="friend-link">Perfil</a>
+                    </div>
+
+                    <!-- Fabi -->
+                    <div class="friend-item flex flex-col items-center">
+                        <div class="friend-circle">
+                            <img src="https://xatimg.com/image/nW55YBWRcnQW.jpg" class="w-full h-full object-cover" draggable="false">
+                        </div>
+                        <span class="text-white text-[9px] font-semibold mb-1">Fabi</span>
                         <a href="https://xat.me/Fabiii9217" target="_blank" class="friend-link">Perfil</a>
                     </div>
 
                     <!-- Ashley -->
-                    <div class="friend-item">
+                    <div class="friend-item flex flex-col items-center">
                         <div class="friend-circle">
-                            <img src="https://xatimg.com/image/DqVrXU6x43Zm.png" alt="Ashley" class="w-full h-full object-cover">
+                            <img src="https://xatimg.com/image/DqVrXU6x43Zm.png" class="w-full h-full object-cover" draggable="false">
                         </div>
-                        <span class="text-white text-[10px] font-semibold mb-1">Ashley</span>
+                        <span class="text-white text-[9px] font-semibold mb-1">Ashley</span>
                         <a href="https://xat.me/solangel" target="_blank" class="friend-link">Perfil</a>
                     </div>
                 </div>
@@ -459,16 +308,16 @@
         const iconPlay = document.getElementById('icon-play');
         const iconPause = document.getElementById('icon-pause');
 
+        // Función de Inicio
         function startExperience() {
             const intro = document.getElementById('intro');
             const main = document.getElementById('main-content');
             
-            // Intentar reproducir música
+            // Intentar reproducir música inmediatamente
             audio.play().then(() => {
                 musicToggle.style.display = 'flex';
                 updateMusicIcons(false);
             }).catch(error => {
-                console.log("Autoplay bloqueado. El botón de música permitirá activarlo.");
                 musicToggle.style.display = 'flex';
                 updateMusicIcons(true);
             });
@@ -492,14 +341,24 @@
         }
 
         function updateMusicIcons(isPaused) {
-            if (isPaused) {
-                iconPlay.style.display = 'block';
-                iconPause.style.display = 'none';
-            } else {
-                iconPlay.style.display = 'none';
-                iconPause.style.display = 'block';
-            }
+            iconPlay.style.display = isPaused ? 'block' : 'none';
+            iconPause.style.display = isPaused ? 'none' : 'block';
         }
+
+        /* --- Seguridad de Código Fuente y Bloqueos --- */
+        // Bloqueo de atajos de teclado (F12, Ctrl+Shift+I, Ctrl+U)
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; // F12
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+        };
+
+        // Bloqueo adicional de arrastre en todas las imágenes
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('dragstart', (e) => e.preventDefault());
+        });
     </script>
 
 </body>
